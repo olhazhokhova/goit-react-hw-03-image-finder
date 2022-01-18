@@ -40,5 +40,10 @@ button:hover {
 
 label {
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+.formWrap button {
+  margin-top: 15px;
 }
