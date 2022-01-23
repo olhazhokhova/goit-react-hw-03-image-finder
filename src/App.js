@@ -32,11 +32,6 @@ class App extends React.Component {
           })),
         )
         .finally(() => this.setState({ loading: false }));
-      page > 1 &&
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        });
     }
   }
 
@@ -57,15 +52,19 @@ class App extends React.Component {
   };
 
   onSubmitQuery = query => {
-    this.setState({ query });
+    this.setState({ query, images: [], totalHits: 0, page: 1 });
   };
 
   onImageClick = (src, alt) => {
-    this.setState({ fullImage: { src, alt } });
+    this.setState({ loading: true, fullImage: { src, alt } });
+  };
+
+  onLoadFullScreenImage = () => {
+    this.setState({ loading: false });
   };
 
   render() {
-    const { images, loading, totalHits, fullImage } = this.state;
+    const { images, loading, totalHits, fullImage, query } = this.state;
 
     return (
       <div className="app-content">
@@ -77,11 +76,19 @@ class App extends React.Component {
           <ImageGallery images={images} onImageClick={this.onImageClick} />
         )}
 
+        {!loading && query.length > 0 && totalHits === 0 && (
+          <p className="text-c">Photos with query {query} not found</p>
+        )}
+
         {totalHits > 12 && <Button onClick={this.onLoadMoreClick} />}
 
         {fullImage && (
           <Modal onClose={this.toggleModal}>
-            <img src={fullImage.src} alt="" />
+            <img
+              src={fullImage.src}
+              alt={fullImage.alt}
+              onLoad={this.onLoadFullScreenImage}
+            />
           </Modal>
         )}
       </div>

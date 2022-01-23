@@ -40,3 +40,7 @@
 .app-content * {
   box-sizing: border-box;
 }
+
+.text-c {
+  text-align: center;
+}
